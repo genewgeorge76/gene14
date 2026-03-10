@@ -1,17 +1,16 @@
-describe('empty spec', () => {
+describe('dashboard', () => {
   beforeEach(() => {
     cy.visit('/')
   })
 
-  it('displays the resources text', () => {
-    cy.get('h2')
-    .contains('This is a bare-bones Angular project that has everything you need to quickly deploy it to Netlify');
+  it('displays the site overview heading', () => {
+    cy.get('h1')
+    .contains('Site Overview');
   })
-  it('renders the image', () => {
-    cy.get('img')
+  it('renders the stats grid', () => {
+    cy.get('.stats-grid')
     .should('be.visible')
-    .and(($img) => {
-      expect($img[0].naturalWidth).to.be.greaterThan(0);
-    })
+    .find('.stat-card')
+    .should('have.length.greaterThan', 0);
   })
 })
