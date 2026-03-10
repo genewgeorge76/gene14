@@ -1,0 +1,149 @@
+<div class="dashboard" [class.sidebar-collapsed]="sidebarCollapsed">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="logo-icon">&#9670;</span>
+      <span class="logo-text" *ngIf="!sidebarCollapsed">Netlify Dashboard</span>
+    </div>
+    <nav class="sidebar-nav">
+      <button
+        *ngFor="let item of navItems"
+        class="nav-item"
+        [class.active]="currentPage === item.id"
+        (click)="navigateTo(item.id)">
+        <span class="nav-icon">{{ item.icon }}</span>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">{{ item.label }}</span>
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="toggle-btn" (click)="toggleSidebar()">
+        <span *ngIf="!sidebarCollapsed">&#9664; Collapse</span>
+        <span *ngIf="sidebarCollapsed">&#9654;</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div class="header-left">
+        <h1>Site Overview</h1>
+        <span class="site-badge">jazzy-frangollo-5269fa</span>
+      </div>
+      <div class="header-right">
+        <span class="status-indicator online"></span>
+        <span class="status-text">Published</span>
+      </div>
+    </header>
+
+    <!-- Stats Grid -->
+    <section class="stats-grid">
+      <div class="stat-card" *ngFor="let stat of stats">
+        <div class="stat-icon">{{ stat.icon }}</div>
+        <div class="stat-info">
+          <span class="stat-title">{{ stat.title }}</span>
+          <span class="stat-value">{{ stat.value }}</span>
+        </div>
+        <span class="stat-change" [ngClass]="{
+          'change-up': stat.changeType === 'up',
+          'change-down': stat.changeType === 'down',
+          'change-neutral': stat.changeType === 'neutral'
+        }">
+          <span *ngIf="stat.changeType === 'up'">&#9650;</span>
+          <span *ngIf="stat.changeType === 'down'">&#9660;</span>
+          {{ stat.change }}
+        </span>
+      </div>
+    </section>
+
+    <!-- Charts Row -->
+    <section class="charts-row">
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>Weekly Traffic</h3>
+          <span class="chart-period">Last 7 days</span>
+        </div>
+        <div class="chart-body">
+          <div class="bar-chart">
+            <div class="bar-group" *ngFor="let bar of weeklyTraffic">
+              <div class="bar-wrapper">
+                <div class="bar" [style.height.%]="bar.height"></div>
+              </div>
+              <span class="bar-label">{{ bar.label }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>Monthly Deploys</h3>
+          <span class="chart-period">Last 6 months</span>
+        </div>
+        <div class="chart-body">
+          <div class="bar-chart">
+            <div class="bar-group" *ngFor="let bar of monthlyDeployments">
+              <div class="bar-wrapper">
+                <div class="bar deploy-bar" [style.height.%]="bar.height"></div>
+              </div>
+              <span class="bar-label">{{ bar.label }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Row -->
+    <section class="bottom-row">
+      <!-- Activity Feed -->
+      <div class="activity-card">
+        <div class="card-header">
+          <h3>Recent Activity</h3>
+        </div>
+        <div class="activity-list">
+          <div class="activity-item" *ngFor="let item of recentActivity">
+            <span class="activity-dot" [ngClass]="getStatusClass(item.status)"></span>
+            <div class="activity-info">
+              <span class="activity-action">{{ item.action }}</span>
+              <span class="activity-detail">{{ item.detail }}</span>
+            </div>
+            <span class="activity-time">{{ item.time }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions-card">
+        <div class="card-header">
+          <h3>Quick Actions</h3>
+        </div>
+        <div class="actions-list">
+          <button class="action-btn">
+            <span class="action-icon">🚀</span>
+            <span>Trigger Deploy</span>
+          </button>
+          <button class="action-btn">
+            <span class="action-icon">🔒</span>
+            <span>Lock Deploys</span>
+          </button>
+          <button class="action-btn">
+            <span class="action-icon">📋</span>
+            <span>View Build Log</span>
+          </button>
+          <button class="action-btn">
+            <span class="action-icon">🔗</span>
+            <span>Domain Settings</span>
+          </button>
+          <button class="action-btn">
+            <span class="action-icon">🔑</span>
+            <span>Environment Vars</span>
+          </button>
+          <button class="action-btn">
+            <span class="action-icon">📦</span>
+            <span>Plugin Manager</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
