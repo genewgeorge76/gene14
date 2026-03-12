@@ -1,15 +1,19 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AppComponent } from './app.component';
+import { RepoListComponent } from './components/repo-list/repo-list.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        HttpClientTestingModule
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        RepoListComponent
       ],
     }).compileComponents();
   });
@@ -26,10 +30,10 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('angular-quickstart');
   });
 
-  it('should render title', () => {
+  it('should render the repo finder heading', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('angular-quickstart app is running!');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Repository Finder');
   });
 });
