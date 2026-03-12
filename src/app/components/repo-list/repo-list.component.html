@@ -1,0 +1,67 @@
+<section class="repo-finder">
+  <div class="repo-finder__header">
+    <h2>Best Repositories to Publish</h2>
+    <p class="repo-finder__subtitle">
+      Repositories for <a [href]="'https://github.com/' + username" target="_blank" rel="noopener">{{ username }}</a>,
+      ranked by popularity
+    </p>
+  </div>
+
+  <div class="repo-finder__controls" *ngIf="!loading && !error">
+    <div class="control-group">
+      <label for="sort-select">Sort by</label>
+      <select id="sort-select" (change)="onSortChange($any($event.target).value)">
+        <option value="score">Best Match (Stars + Forks)</option>
+        <option value="stars">Stars</option>
+        <option value="forks">Forks</option>
+        <option value="updated">Recently Updated</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label for="lang-select">Language</label>
+      <select id="lang-select" (change)="onLanguageChange($any($event.target).value)">
+        <option *ngFor="let lang of languages" [value]="lang">{{ lang }}</option>
+      </select>
+    </div>
+    <span class="repo-count">{{ filteredRepos.length }} repositories</span>
+  </div>
+
+  <div class="repo-finder__loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading repositories…</p>
+  </div>
+
+  <div class="repo-finder__error" *ngIf="error">
+    <p>⚠️ {{ error }}</p>
+  </div>
+
+  <div class="repo-grid" *ngIf="!loading && !error">
+    <a
+      *ngFor="let repo of filteredRepos; let i = index"
+      class="repo-card"
+      [class.repo-card--top]="isTopRanked(repo, i)"
+      [href]="repo.html_url"
+      target="_blank"
+      rel="noopener"
+    >
+      <div class="repo-card__badge" *ngIf="isTopRanked(repo, i)">⭐ Best for Publish</div>
+      <h3 class="repo-card__name">{{ repo.name }}</h3>
+      <p class="repo-card__description">{{ repo.description || 'No description provided.' }}</p>
+      <div class="repo-card__meta">
+        <span class="meta-tag" *ngIf="repo.language">
+          <span class="meta-dot"></span>{{ repo.language }}
+        </span>
+        <span class="meta-stat" title="Stars">⭐ {{ repo.stargazers_count }}</span>
+        <span class="meta-stat" title="Forks">🍴 {{ repo.forks_count }}</span>
+        <span class="meta-stat meta-stat--updated" title="Last updated">🕒 {{ formatDate(repo.updated_at) }}</span>
+      </div>
+      <div class="repo-card__topics" *ngIf="repo.topics?.length">
+        <span class="topic-chip" *ngFor="let topic of repo.topics.slice(0, 4)">{{ topic }}</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="repo-finder__empty" *ngIf="!loading && !error && filteredRepos.length === 0">
+    <p>No repositories found for the selected filter.</p>
+  </div>
+</section>
